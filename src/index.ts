@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {createConnection, In} from "typeorm";
+import {createConnection, In, Like} from "typeorm";
 import {User} from "./entity/User";
 import * as express from "express";
 import * as cors from 'cors';
@@ -206,6 +206,47 @@ createConnection().then(async connection => {
             const data=await registerRepository.findAndCount();
             console.log(data);
             return res.send(data);
+            
+        })
+        app.get("/register/:id",async(req,res)=>{
+            console.log("999999999999",req.params)
+            const data=await registerRepository.find({
+                where:{
+                    userId:req.params.id
+                },
+                
+            })
+            return res.send(data)
+        })
+        app.get("/list",async(req,res)=>{
+            console.log(req.query)
+            try {
+                if('type'in req.query){
+                    const loadedPosts = await eventRepository.find({
+
+                        eventType: Like(`%${req.query.type}%`),
+                        isApproved:Like(true)
+                       
+                        
+                        
+                    });  
+                    return res.send(loadedPosts);
+                }
+                const loadedPosts = await eventRepository.find({
+
+                    
+                    Address: Like(`%${req.query.address}%`),
+                    isApproved:Like(true)
+                    
+                    
+                });  
+                return res.send(loadedPosts);
+            } catch (error) {
+                console.log(error)
+                return;
+            }
+            
+            
             
         })
 
