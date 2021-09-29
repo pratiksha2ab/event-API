@@ -1,0 +1,32 @@
+task
+environment file ,why to use and implementation
+file delete(banner )
+last ma submit garya first ma dekhauna paryo , created at desending format
+
+const getUserByID=async(id)=>{
+    console.log("yeha k aaera xa=======>",id)
+   if(!id){
+       const response=await userRespository.find();
+       return response;
+   }
+        const response=await userRespository.find({
+            where: {
+                username:In([id]),
+            }
+        });
+        return response
+}
+
+
+app.get("/user", async (req,res) => {
+        console.log("myreq-->",req.query.id)
+        const userResponse=await getUserByID(req.query.id)
+        console.log(userResponse)
+        return  res.send (userResponse);
+        
+    })
+
+
+
+    
+    
